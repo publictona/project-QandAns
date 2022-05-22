@@ -1,21 +1,28 @@
 const express = require('express')
 const router = express.Router()
-const blogController = require('../Controller/blogController')
-const authorController = require('../Controller/authorController')
-const middle = require('../middleware/allMiddleware')
+const userContoller = require("../Controller/userContoller")
+const logincontoller = require ("../Controller/loginController")
+const questionController = require('../Controller/questionController')
+const answerContoller = require('../Controller/answerController')
 
-router.post('/authors', authorController.createAuthor)
+//@ USER ROUTE HANDLER
+router.post('/register',userContoller.registerUser)
+router.post('/login',logincontoller.loginUser)
+router.get('/user/:userId/profile',userContoller.getUser)
+router.put('/user/:userId/profile',userContoller.updateUser)
 
-router.post('/blogs', middle.authentication , blogController.createBlog)
+//@ QUESTION ROUTE HANDLER
+router.post('/question',questionController.createQuestion)
+router.get('/questions',questionController.getQuestion)
+router.get('/questions/:questionId',questionController.getQuestions)
+router.put('/questions/:questionId',questionController.updateQuestion)
+router.delete('/questions/:questionId',questionController.deleteQuestion)
 
-router.get('/getblogs',middle.authentication  ,blogController.getBlogs)
-
-router.put('/blogs/:blogsId',middle.authentication, middle.deleteandUpdateBlogById,  blogController.updateBlog)
-
-router.put('/deleteblogs/:blogsId', middle.authentication, middle.deleteandUpdateBlogById, blogController.deleteBlog)
-
-router.put('/delete', middle.authentication, middle.deleteBlogbyParams,  blogController.deleteByParams)
-
-router.post('/login', authorController.loginUser )
+//@ ANSWER ROUTE HANDLER
+ router.post('/answer',answerContoller.createAnswer)
+ router.get('/questions/:questionId/answer',answerContoller.getAllAnswerWithQuestion)
+ router.put('/answer/:answerId',answerContoller.updateAnswer)
+ router.delete('/answers/:answerId',answerContoller.deleteAnswer)
 
 module.exports = router
+
